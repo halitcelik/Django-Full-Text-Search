@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    Normal search form
+    <form action="/normal-results" method="post">
+        {% csrf_token %}
+        <input type="text" name="query">
+        <input type="submit" name="Search">
+    </form>
+    Fast search form
+    <form action="/fast-results" method="post">
+        {% csrf_token %}
+        <input type="text" name="query">
+        <input type="submit" name="Search">
+    </form>
+    Fastest search form
+    <form action="/fastest-results" method="post">
+        {% csrf_token %}
+        <input type="text" name="query">
+        <input type="submit" name="Search">
+    </form>
+{% endblock content %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    {{results|length}}
+    {% for result in results %}
+
+        <a href="{{result.get_absolute_url}}"><p>{{result.title}}</p></a>
+    {% endfor %}
+{% endblock content %}
