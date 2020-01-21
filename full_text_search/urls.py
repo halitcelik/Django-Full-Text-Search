@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from web.views import (details, fast_results, fastest_results, home,
-                       normal_results)
+                       json_result, normal_results)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +26,7 @@ urlpatterns = [
     path('fast-results', fast_results, name='fast-results'),
     path('fastest-results', fastest_results, name='fastest-results'),
     path('pages/<int:id>', details, name='web.views.details'),
+    path('json-results/', json_result, name='web.views.json_result'),
 ]
 
 if settings.DEBUG:

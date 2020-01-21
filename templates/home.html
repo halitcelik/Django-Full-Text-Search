@@ -1,21 +1,59 @@
 {% extends "base.html" %}
 {% block content %}
-    Normal search form
-    <form action="/normal-results" method="post">
-        {% csrf_token %}
-        <input type="text" name="query">
-        <input type="submit" name="Search">
-    </form>
-    Fast search form
-    <form action="/fast-results" method="post">
-        {% csrf_token %}
-        <input type="text" name="query">
-        <input type="submit" name="Search">
-    </form>
-    Fastest search form
-    <form action="/fastest-results" method="post">
-        {% csrf_token %}
-        <input type="text" name="query">
-        <input type="submit" name="Search">
-    </form>
+Normal search form
+<form action="/normal-results" method="post">
+    {% csrf_token %}
+    <input type="text" name="query">
+    <input type="submit" name="Search">
+</form>
+Fast search form
+<form action="/fast-results" method="post">
+    {% csrf_token %}
+    <input type="text" name="query">
+    <input type="submit" name="Search">
+</form>
+Fastest search form
+<form action="/fastest-results" method="post">
+    {% csrf_token %}
+    <input id="search-input" type="text" name="query">
+    <input type="submit" name="Search">
+</form>
+<div id="results-container" style="background-color: #e5e5e5;"></div>
+<script>
+const input = document.getElementById('search-input');
+const csrf = document.querySelector('[name="csrfmiddlewaretoken"').value;
+const headers = new Headers({
+    'Content-Type': 'x-www-form-urlencoded',
+});
+const resultsContainer = document.getElementById('results-container');
+headers['X-CSRF-TOKEN'] = csrf
+input.addEventListener('input', function() {
+    fetch('/json-results/', {
+            headers: headers,
+            method: 'POST',
+            body: JSON.stringify({
+                query: input.value,
+            })
+        })
+        .then(response => response.json())
+        .then(function(result) {
+            console.log("---------------------")
+            while (resultsContainer.firstChild) {
+                resultsContainer.removeChild(resultsContainer.firstChild);
+            }
+            Object.keys(result.json_data).forEach(function(k) {
+                console.log(result.json_data[k])
+                let anchor = document.createElement('a')
+                anchor.setAttribute('href', 'pages/' + k)
+                let title = document.createElement('p');
+                title.textContent = result.json_data[k].title
+                anchor.appendChild(title)
+
+                resultsContainer.appendChild(anchor)
+            });
+            /*for(let element of result.json_data)
+            console.log(element);*/
+        })
+});
+</script>
 {% endblock content %}
